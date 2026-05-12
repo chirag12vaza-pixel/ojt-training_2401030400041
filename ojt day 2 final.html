@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Musica</title>
+<style>
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #fcfcfc;
+}
+
+header {
+    background-color: #010101;
+    color: white;
+    padding-bottom: 50px; 
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    padding: 15px 30px;
+    gap: 25px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+nav .logo {
+    margin-right: auto; 
+    display: flex;
+    align-items: center;
+}
+
+nav .logo img {
+    height: 50px; 
+    filter: invert(1); 
+}
+
+nav a:not(.logo):hover {
+    color: gold;
+}
+
+.hero {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin: 0 0 10px 0;
+    color: gold;
+}
+
+.hero p {
+    font-size: 18px;
+    margin: 0;
+    color: #cccccc;
+}
+
+.slider { overflow: hidden; max-width: 900px; margin: 40px auto; position: relative; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+.slides { display: flex; transition: transform 0.4s ease; }
+.slides img { width: 100%; flex-shrink: 0; height: 400px; object-fit: cover; }
+.btn { position: absolute; top: 45%; padding: 12px 18px; cursor: pointer; background: rgba(0,0,0,0.5); color: gold; border: none; font-size: 24px; transition: 0.3s; }
+.btn:hover { background: rgba(0,0,0,0.9); }
+
+/* Comparison Table Styles */
+.comparison-container {
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 0 20px;
+}
+
+.comparison-container h2 {
+    text-align: center;
+    color: #010101;
+    font-size: 32px;
+    margin-bottom: 30px;
+}
+
+.compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.compare-table th, .compare-table td {
+    padding: 18px 20px;
+    text-align: center;
+    border: 1px solid #eaeaea;
+}
+
+.compare-table th {
+    background-color: #010101;
+    color: gold;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.compare-table td:first-child {
+    font-weight: bold;
+    text-align: left;
+    background-color: #f9f9f9;
+    color: #333;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.compare-table tr:hover td:not(:first-child) {
+    background-color: #fffbf0; 
+    transition: background-color 0.3s ease;
+}
+
+</style>
+</head>
+<body>
+
+<header>
+    <nav>
+        <a href="#" class="logo">
+            <img src="C:\Users\Chirag\Downloads\music instru.png" alt="Musica Logo">
+        </a>
+        <a href="#">Guitars</a>
+        <a href="#">Keyboards</a>
+        <a href="#">Drums</a>
+        <a href="#">Strings</a>
+        <a href="#">Contact</a>
+    </nav>
+
+    <div class="hero">
+        <h1>Welcome to Musica</h1>
+        <p>Find the perfect instrument to match your passion.</p>
+    </div>
+</header>
+
+<div class="slider">
+    <div class="slides">
+        <img src="C:\Users\Chirag\Downloads\drums.jpg" alt="DRUMS">
+        <img src="C:\Users\Chirag\Downloads\strings.jpg" alt="STRINGS">
+        <img src="C:\Users\Chirag\Downloads\keyboard.jpg" alt="KEYBOARD">
+        <img src="C:\Users\Chirag\Downloads\guitar.jpg" alt="GUITAR">
+    </div>
+    <button class="btn" style="left:0;" onclick="move(-1)">&#10094;</button>
+    <button class="btn" style="right:0;" onclick="move(1)">&#10095;</button>
+</div>
+
+<!-- NEW COMPARISON TABLE ADDED HERE -->
+<div class="comparison-container">
+    <h2>Choose Your Instrument Family</h2>
+    <table class="compare-table">
+        <thead>
+            <tr>
+                <th>Instrument</th>
+                <th>Learning Curve</th>
+                <th>Volume Level</th>
+                <th>Portability</th>
+                <th>Best For</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Guitars</td>
+                <td>Moderate</td>
+                <td>Low to High</td>
+                <td>Excellent</td>
+                <td>Rock, Pop, Singer-Songwriter</td>
+            </tr>
+            <tr>
+                <td>Keyboards</td>
+                <td>Beginner Friendly</td>
+                <td>Adjustable (Headphones)</td>
+                <td>Moderate</td>
+                <td>Classical, Production, Pop</td>
+            </tr>
+            <tr>
+                <td>Drums</td>
+                <td>Challenging (Coordination)</td>
+                <td>Very High</td>
+                <td>Low</td>
+                <td>Rhythm, Band Foundation</td>
+            </tr>
+            <tr>
+                <td>Strings (Violin/Cello)</td>
+                <td>Steep</td>
+                <td>Moderate</td>
+                <td>Excellent</td>
+                <td>Classical, Orchestral, Folk</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    let i = 0, timer = setInterval(() => move(1), 3500);
+    function move(step) {
+        i = (i + step + 4) % 4; 
+        document.querySelector('.slides').style.transform = `translateX(-${i * 100}%)`;
+        clearInterval(timer); timer = setInterval(() => move(1), 3500);
+    }
+</script>
+
+</body>
+</html>
