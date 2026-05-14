@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dark Mode Toggle</title>
+<style>
+  :root {
+    --bg-color: #ffffff;
+    --text-color: #333333;
+    --card-bg: #f4f4f4;
+    --button-bg: #2c3e50;
+    --button-text: #ffffff;
+  }
+
+  [data-theme="dark"] {
+    --bg-color: #121212;
+    --text-color: #f0f0f0;
+    --card-bg: #1e1e1e;
+    --button-bg: #f39c12;
+    --button-text: #121212;
+  }
+
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: background-color 0.4s ease, color 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  .card {
+    background-color: var(--card-bg);
+    padding: 40px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    transition: background-color 0.4s ease, box-shadow 0.4s ease;
+    width: 350px;
+  }
+
+  h1 {
+    margin-top: 0;
+  }
+
+  button {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 25px;
+    transition: background-color 0.4s ease, color 0.4s ease, transform 0.2s ease;
+  }
+
+  button:active {
+    transform: scale(0.95);
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <h1>Theme Switcher</h1>
+  <p>Experience the smooth transition between light and dark visual modes.</p>
+  <button id="themeToggle">Enable Dark Mode</button>
+</div>
+
+<script>
+  const toggleBtn = document.getElementById('themeToggle');
+  const body = document.body;
+
+  toggleBtn.addEventListener('click', () => {
+    if (body.getAttribute('data-theme') === 'dark') {
+      body.removeAttribute('data-theme');
+      toggleBtn.textContent = 'Enable Dark Mode';
+    } else {
+      body.setAttribute('data-theme', 'dark');
+      toggleBtn.textContent = 'Enable Light Mode';
+    }
+  });
+</script>
+
+</body>
+</html>
