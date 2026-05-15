@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Musica</title>
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #fcfcfc;
+}
+header {
+    background-color: #010101;
+    color: white;
+    padding-bottom: 50px; 
+}
+nav {
+    display: flex;
+    align-items: center;
+    padding: 15px 30px;
+    gap: 25px;
+}
+nav a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    cursor: pointer;
+}
+nav .logo {
+    margin-right: auto; 
+    display: flex;
+    align-items: center;
+}
+nav .logo img {
+    height: 50px; 
+    filter: invert(1); 
+}
+nav a:not(.logo):hover {
+    color: gold;
+}
+.hero {
+    text-align: center;
+    padding: 60px 20px;
+}
+.hero h1 {
+    font-size: 48px;
+    margin: 0 0 10px 0;
+    color: gold;
+}
+.hero p {
+    font-size: 18px;
+    margin: 0;
+    color: #cccccc;
+}
+.slider { overflow: hidden; max-width: 900px; margin: 40px auto; position: relative; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+.slides { display: flex; transition: transform 0.4s ease; }
+.slides img { width: 100%; flex-shrink: 0; height: 400px; object-fit: cover; }
+.btn { position: absolute; top: 45%; padding: 12px 18px; cursor: pointer; background: rgba(0,0,0,0.5); color: gold; border: none; font-size: 24px; transition: 0.3s; }
+.btn:hover { background: rgba(0,0,0,0.9); }
+.comparison-container {
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 0 20px;
+}
+.comparison-container h2 {
+    text-align: center;
+    color: #010101;
+    font-size: 32px;
+    margin-bottom: 30px;
+}
+.compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    border-radius: 8px;
+    overflow: hidden;
+}
+.compare-table th, .compare-table td {
+    padding: 18px 20px;
+    text-align: center;
+    border: 1px solid #eaeaea;
+}
+.compare-table th {
+    background-color: #010101;
+    color: gold;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+.compare-table td:first-child {
+    font-weight: bold;
+    text-align: left;
+    background-color: #f9f9f9;
+    color: #333;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+.compare-table tr:hover td:not(:first-child) {
+    background-color: #fffbf0; 
+    transition: background-color 0.3s ease;
+}
+.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); }
+.modal-content { background-color: #fcfcfc; margin: 10% auto; padding: 30px; border-radius: 8px; width: 350px; position: relative; box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
+.close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+.close:hover { color: #010101; }
+.auth-tabs { display: flex; margin-bottom: 20px; border-bottom: 2px solid #eaeaea; }
+.tab-btn { flex: 1; padding: 10px; background: none; border: none; font-size: 16px; cursor: pointer; color: #888; font-weight: bold; }
+.tab-btn.active { color: #010101; border-bottom: 2px solid gold; }
+.auth-form { display: none; flex-direction: column; gap: 15px; }
+.auth-form.active-form { display: flex; }
+.auth-form h2 { margin: 0 0 10px 0; font-size: 24px; color: #010101; text-align: center; }
+.auth-form input { padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+.auth-form input:focus { outline: none; border-color: gold; }
+.auth-submit { background-color: #010101; color: gold; padding: 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.3s; }
+.auth-submit:hover { background-color: #333; }
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: 2px solid gold;
+    color: gold;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin: 30px 0 0 30px;
+}
+.back-btn:hover {
+    background-color: gold;
+    color: #010101;
+}
+.category-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px 20px 60px 20px;
+}
+.category-page h2 {
+    font-size: 36px;
+    color: #010101;
+    margin: 30px 0 10px 0;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    border-left: 5px solid gold;
+    padding-left: 15px;
+}
+.category-page p.category-desc {
+    color: #666;
+    font-size: 16px;
+    margin-bottom: 40px;
+    padding-left: 20px;
+}
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+}
+.product-card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+.product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.14);
+}
+.product-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+.product-card:hover img {
+    transform: scale(1.04);
+}
+.product-card-body {
+    padding: 20px;
+    border-top: 3px solid gold;
+}
+.product-card-body h3 {
+    font-size: 20px;
+    color: #010101;
+    margin: 0 0 8px 0;
+}
+.product-card-body .card-price {
+    font-size: 22px;
+    color: gold;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+.product-card-body p {
+    font-size: 14px;
+    color: #777;
+    line-height: 1.5;
+    margin: 0 0 16px 0;
+}
+.view-details-btn {
+    display: block;
+    width: 100%;
+    background-color: #010101;
+    color: gold;
+    border: none;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    box-sizing: border-box;
+}
+.view-details-btn:hover {
+    background-color: #333;
+}
+.remove-wishlist-btn {
+    display: block;
+    width: 100%;
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    box-sizing: border-box;
+    margin-top: 10px;
+}
+.remove-wishlist-btn:hover {
+    background-color: #c9302c;
+}
+.detail-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 10px 20px 60px 20px;
+}
+.detail-layout {
+    display: flex;
+    gap: 50px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+.detail-gallery {
+    flex: 1;
+    min-width: 320px;
+}
+.detail-main-img {
+    width: 100%;
+    height: 420px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    margin-bottom: 15px;
+    transition: opacity 0.3s ease;
+}
+.detail-thumbs {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.detail-thumbs img {
+    width: 75px;
+    height: 75px;
+    object-fit: cover;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease, transform 0.2s ease;
+}
+.detail-thumbs img:hover {
+    transform: scale(1.08);
+}
+.detail-thumbs img.active-thumb {
+    border-color: gold;
+}
+.detail-info {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+.detail-badge {
+    display: inline-block;
+    background-color: gold;
+    color: #010101;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 2px;
+    margin-bottom: 14px;
+    width: fit-content;
+}
+.detail-info h1 {
+    font-size: 34px;
+    color: #010101;
+    margin: 0 0 8px 0;
+    line-height: 1.2;
+}
+.detail-price {
+    font-size: 30px;
+    color: gold;
+    font-weight: bold;
+    margin-bottom: 18px;
+}
+.detail-desc {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 25px;
+    border-left: 3px solid #eaeaea;
+    padding-left: 15px;
+}
+.detail-specs {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 30px 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    overflow: hidden;
+}
+.detail-specs li {
+    display: flex;
+    padding: 12px 18px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+    color: #333;
+    align-items: center;
+}
+.detail-specs li:last-child {
+    border-bottom: none;
+}
+.detail-specs li strong {
+    width: 140px;
+    min-width: 140px;
+    color: #010101;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.detail-actions {
+    display: flex;
+    gap: 14px;
+    margin-top: auto;
+}
+.detail-add-cart {
+    flex: 2;
+    background-color: #010101;
+    color: gold;
+    border: none;
+    padding: 16px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+.detail-add-cart:hover {
+    background-color: #333;
+}
+.detail-add-cart:active {
+    transform: scale(0.98);
+}
+.detail-wishlist {
+    flex: 1;
+    background: none;
+    border: 2px solid #010101;
+    color: #010101;
+    padding: 16px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.detail-wishlist:hover {
+    background-color: #010101;
+    color: gold;
+}
+.related-section {
+    margin-top: 60px;
+    border-top: 2px solid #eaeaea;
+    padding-top: 40px;
+}
+.related-section h3 {
+    font-size: 22px;
+    color: #010101;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 25px;
+}
+.related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+.related-card {
+    background: white;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+.related-card:hover {
+    transform: translateY(-4px);
+}
+.related-card img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    display: block;
+}
+.related-card-body {
+    padding: 12px;
+    border-top: 2px solid gold;
+}
+.related-card-body p {
+    font-size: 13px;
+    font-weight: bold;
+    color: #010101;
+    margin: 0 0 4px 0;
+}
+.related-card-body span {
+    font-size: 15px;
+    color: gold;
+    font-weight: bold;
+}
+.payment-container {
+    max-width: 1100px;
+    margin: 40px auto;
+    display: flex;
+    gap: 40px;
+    padding: 0 20px;
+    flex-wrap: wrap;
+}
+.checkout-form {
+    flex: 2;
+    min-width: 300px;
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+.checkout-form h2 {
+    margin-top: 0;
+    color: #010101;
+    border-bottom: 2px solid gold;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+.checkout-form input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+.checkout-form input:focus {
+    outline: none;
+    border-color: gold;
+}
+.checkout-form .row {
+    display: flex;
+    gap: 15px;
+}
+.order-summary {
+    flex: 1;
+    min-width: 300px;
+    background: #010101;
+    color: white;
+    padding: 30px;
+    border-radius: 8px;
+    height: fit-content;
+}
+.order-summary h2 {
+    color: gold;
+    margin-top: 0;
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 15px;
+    color: #ccc;
+}
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #333;
+    font-size: 20px;
+    font-weight: bold;
+    color: gold;
+}
+.pay-btn {
+    width: 100%;
+    background: gold;
+    color: #010101;
+    border: none;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 25px;
+    text-transform: uppercase;
+    transition: 0.3s;
+}
+.pay-btn:hover {
+    background: #e5b800;
+}
+.profile-container {
+    max-width: 1100px;
+    margin: 40px auto;
+    display: flex;
+    gap: 40px;
+    padding: 0 20px;
+    flex-wrap: wrap;
+}
+.profile-sidebar {
+    flex: 1;
+    min-width: 250px;
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    text-align: center;
+    height: fit-content;
+}
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    background: #010101;
+    color: gold;
+    font-size: 40px;
+    font-weight: bold;
+    line-height: 100px;
+    border-radius: 50%;
+    margin: 0 auto 15px auto;
+}
+.profile-sidebar h3 {
+    margin: 0 0 5px 0;
+    color: #010101;
+    font-size: 22px;
+}
+.profile-sidebar p {
+    margin: 0 0 25px 0;
+    color: #777;
+    font-size: 14px;
+}
+.profile-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+}
+.profile-menu li {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eaeaea;
+    color: #333;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+.profile-menu li:hover {
+    color: gold;
+    background: #010101;
+}
+.profile-menu li:last-child {
+    border-bottom: none;
+    color: #d9534f;
+}
+.profile-content {
+    flex: 3;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+.profile-section {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+.profile-section h2 {
+    margin-top: 0;
+    color: #010101;
+    border-bottom: 2px solid gold;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+.info-box {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 4px;
+    border: 1px solid #eaeaea;
+}
+.info-box label {
+    display: block;
+    font-size: 12px;
+    color: #777;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+.info-box span {
+    font-size: 16px;
+    color: #010101;
+    font-weight: bold;
+}
+.order-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #eaeaea;
+    border-radius: 4px;
+    background: #f9f9f9;
+}
+.order-item-details h4 {
+    margin: 0 0 5px 0;
+    color: #010101;
+}
+.order-item-details p {
+    margin: 0;
+    font-size: 13px;
+    color: #777;
+}
+.order-status {
+    background: #e6f4ea;
+    color: #1e8e3e;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+</style>
+</head>
+<body>
+
+<header id="mainHeader">
+    <nav>
+        <a class="logo" onclick="showPage('homePage')">
+            <img src="C:\Users\Chirag\Downloads\music instru.png" alt="Musica Logo">
+        </a>
+        <a onclick="showAllCategories()">Categories</a>
+        <a onclick="showCategoryPage('guitars')">Guitars</a>
+        <a onclick="showCategoryPage('keyboards')">Keyboards</a>
+        <a onclick="showCategoryPage('drums')">Drums</a>
+        <a onclick="showCategoryPage('strings')">Strings</a>
+        <a onclick="showWishlistPage()">Wishlist <span id="wishlistCount">(0)</span></a>
+        <a href="#">Contact</a>
+        <a href="#" id="authBtn" onclick="openModal()" style="color: gold; font-weight: bold;">Login / Register</a>
+    </nav>
+    <div class="hero" id="heroSection">
+        <h1>Welcome to Musica</h1>
+        <p>Find the perfect instrument to match your passion.</p>
+    </div>
+</header>
+
+<div id="homePage">
+    <div class="slider">
+        <div class="slides">
+            <img src="https://images.unsplash.com/photo-1461784121038-f088ca1e7714?w=600&auto=format&fit=crop&q=60" alt="Drums">
+            <img src="https://images.unsplash.com/photo-1575032996422-68b9efa1d603?w=600&auto=format&fit=crop&q=60" alt="STRINGS">
+            <img src="https://images.unsplash.com/photo-1561014816-50ce5acb5e73?w=600&auto=format&fit=crop&q=60" alt="KEYBOARD">
+            <img src="https://images.unsplash.com/photo-1605020420620-20c943cc4669?q=80&w=1170&auto=format&fit=crop" alt="Guitar">
+        </div>
+        <button class="btn" style="left:0;" onclick="move(-1)">&#10094;</button>
+        <button class="btn" style="right:0;" onclick="move(1)">&#10095;</button>
+    </div>
+    <div class="comparison-container">
+        <h2>Choose Your Instrument Family</h2>
+        <table class="compare-table">
+            <thead>
+                <tr>
+                    <th>Instrument</th>
+                    <th>Learning Curve</th>
+                    <th>Volume Level</th>
+                    <th>Portability</th>
+                    <th>Best For</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Guitars</td><td>Moderate</td><td>Low to High</td><td>Excellent</td><td>Rock, Pop, Singer-Songwriter</td></tr>
+                <tr><td>Keyboards</td><td>Beginner Friendly</td><td>Adjustable (Headphones)</td><td>Moderate</td><td>Classical, Production, Pop</td></tr>
+                <tr><td>Drums</td><td>Challenging</td><td>Very High</td><td>Low</td><td>Rhythm, Band Foundation</td></tr>
+                <tr><td>Strings</td><td>Steep</td><td>Moderate</td><td>Excellent</td><td>Classical, Orchestral, Folk</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="allCategoriesPage" style="display:none;">
+    <button class="back-btn" onclick="showPage('homePage')">&#8592; Back to Home</button>
+    <div class="category-page">
+        <h2>All Categories</h2>
+        <p class="category-desc">Browse our collection by instrument family.</p>
+        <div class="products-grid">
+            <div class="product-card" onclick="showCategoryPage('guitars')">
+                <img src="https://images.unsplash.com/photo-1605020420620-20c943cc4669?q=80&w=600&auto=format&fit=crop" alt="Guitars">
+                <div class="product-card-body">
+                    <h3>Guitars</h3>
+                    <p>Acoustic, Electric, and Classical guitars.</p>
+                    <button class="view-details-btn">Explore Guitars</button>
+                </div>
+            </div>
+            <div class="product-card" onclick="showCategoryPage('keyboards')">
+                <img src="https://images.unsplash.com/photo-1561014816-50ce5acb5e73?w=600&auto=format&fit=crop&q=60" alt="Keyboards">
+                <div class="product-card-body">
+                    <h3>Keyboards</h3>
+                    <p>Digital Pianos, Synthesizers, and Portable Keyboards.</p>
+                    <button class="view-details-btn">Explore Keyboards</button>
+                </div>
+            </div>
+            <div class="product-card" onclick="showCategoryPage('drums')">
+                <img src="https://images.unsplash.com/photo-1461784121038-f088ca1e7714?w=600&auto=format&fit=crop&q=60" alt="Drums">
+                <div class="product-card-body">
+                    <h3>Drums & Percussion</h3>
+                    <p>Acoustic Kits, Electronic Drums, and Hand Percussion.</p>
+                    <button class="view-details-btn">Explore Drums</button>
+                </div>
+            </div>
+            <div class="product-card" onclick="showCategoryPage('strings')">
+                <img src="https://images.unsplash.com/photo-1575032996422-68b9efa1d603?w=600&auto=format&fit=crop&q=60" alt="Strings">
+                <div class="product-card-body">
+                    <h3>Strings</h3>
+                    <p>Violins, Cellos, Ukuleles, and orchestral strings.</p>
+                    <button class="view-details-btn">Explore Strings</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="guitarsPage" style="display:none;">
+    <button class="back-btn" onclick="showAllCategories()">&#8592; Back to Categories</button>
+    <div class="category-page">
+        <h2>Guitars</h2>
+        <p class="category-desc">From acoustic warm tones to electric powerhouses — find your perfect guitar.</p>
+        <div class="products-grid">
+            <div class="product-card" onclick="showDetailPage('guitar1')">
+                <img src="https://images.unsplash.com/photo-1605020420620-20c943cc4669?q=80&w=600&auto=format&fit=crop" alt="Acoustic Guitar">
+                <div class="product-card-body">
+                    <h3>Classic Acoustic Guitar</h3><div class="card-price">₹49,999</div>
+                    <p>Rich warm tones, solid mahogany body, perfect for beginners and pros alike.</p>
+                    <button class="view-details-btn">View Details</button>
+                </div>
+            </div>
+            <div class="product-card" onclick="showDetailPage('guitar2')">
+                <img src="https://images.unsplash.com/photo-1510915361894-db8b60106cb1?q=80&w=600&auto=format&fit=crop" alt="Electric Guitar">
+                <div class="product-card-body">
+                    <h3>Electric Lead Guitar</h3><div class="card-price">₹70,999</div>
+                    <p>Powerful humbuckers, sleek double-cutaway body, built for rock and blues.</p>
+                    <button class="view-details-btn">View Details</button>
+                </div>
+            </div>
+            <div class="product-card" onclick="showDetailPage('guitar3')">
+                <img src="https://images.unsplash.com/photo-1558098329-a11cff621064?q=80&w=600&auto=format&fit=crop" alt="Nylon Guitar">
+                <div class="product-card-body">
+                    <h3>Classical Nylon Guitar</h3><div class="card-price">₹33,499</div>
+                    <p>Spruce top, cedar back, nylon strings for a soft classical or fingerstyle tone.</p>
+                    <button class="view-details-btn">View Details</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="keyboardsPage" style="display:none;">
+    <button class="back-btn" onclick="showAllCategories()">&#8592; Back to Categories</button>
+    <div class="category-page">
+        <h2>Keyboards</h2>
+        <p class="category-desc">From weighted digital pianos to synths — explore our full keyboard range.</p>
+        <div class="products-grid">
+            <div class="product-card" onclick="showDetailPage('keyboard1')">
+                <img src="https://images.unsplash.com/photo-1561014816-50ce5acb5e73?w=600&auto=format&fit=crop&q=60" alt="Piano">
+                <div class="product-card-body">
+                    <h3>Digital Grand Piano</h3><div class="card-price">₹99,999</div>
+                    <p>88 fully weighted keys, hammer action, authentic grand piano sound samples.</p>
+                    <button class="view-details-btn">View Details</button>
+                </div>
+            </div>
+            <div class="product-card" onclick="showDetailPage('keyboard2')">
+                <img src="https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?q=80&w=600&auto=format&fit=crop" alt="Keyboard">
+                <div class="product-card-body">
+                    <h3>Portable Learning Keyboard</h3><div class="card-price">₹24,999</div>
+                    <p>61 keys, 400 built-in tones, light-up keys — ideal for beginners of all ages.</p>
+                    <button class="view-details-btn">View Details</button>
+                </div>
+            </div>
+            <div class="product-card" onclick="showDetailPage('keyboard3')">
+                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=600&auto=format&fit=crop" alt="Synth">
+                <div class="product-card-body">
+                    <h3>Analog Synthesizer</h3><div class="card-price">₹62,499</div>
+                    <p>Shape sound with your hands. Puts true analog circuitry at your fingertips.</p>
+                    <button class="view-details-btn">View Details</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="drumsPage" style="display:none;">
+    <button class="back-btn" onclick="showAllCategories()">&#8592; Back to Categories</button>
+    <div class="category-page">
+        <h2>Drums</h2>
+        <p class="category-desc">Full acoustic kits, electronic drum pads, and everything in between.</p>
+        <div class="products-grid">
+            <div class="product-card" onclick="showDetailPage('drum1')">
+                <img src="https://images.unsplash.com/photo-1461784121038-f088ca1e7714?w=600&auto=format&fit=crop&q=60" alt="Drum Kit">
+                <div class="product-card-body">
+                    <h3>Pro Acoustic Drum Kit</h3><div class="card-price">₹1,24,999</div>
+                    <p>5-piece maple shell kit with Zildjian cymbals, hardware pack included.</p>
+                    <button class="view-details-btn">View Details</button>
+                </div>
+            </div>
+            <div class="product-card" onclick="showDetailPage('drum2')">
+                <img src="https://images.unsplash.com/photo-1571327073757-71d13c5e0041?q=80&w=600&auto=format&fit=crop" alt="E-Drums">
+                <div class="product-card-body">
+                    <h3>Electronic Drum Kit</h3><div class="card-price">₹74,999</div>
+                    <p>Mesh heads, 50 preset kits, headphone output — play quietly any time.</p>
+                    <button class="view-details-btn">View Details</button>
+                </div>
+            </div>
+            <div class="product-card" onclick="showDetailPage('drum3')">
+                <img src="https://images.unsplash.com/photo-1519892300165-cb5542fb47c7?q=80&w=600&auto=format&fit=crop" alt="Cajon">
+                <div class="product-card-body">
+                    <h3>Handcrafted Cajon</h3><div class="card-price">₹16,599</div>
+                    <p>Birch plywood, adjustable snare wires, compact and portable.</p>
+                    <button class="view-details-btn">View Details</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="stringsPage" style="display:none;">
+    <button class="back-btn" onclick="showAllCategories()">&#8592; Back to Categories</button>
+    <div class="category-page">
+        <h2>Strings</h2>
+        <p class="category-desc">Violins, cellos, ukuleles, and basses — the world of string instruments awaits.</p>
+        <div class="products-grid">
+            <div class="product-card" onclick="showDetailPage('string1')">
+                <img src="https://images.unsplash.com/photo-1575032996422-68b9efa1d603?w=600&auto=format&fit=crop&q=60" alt="Violin">
+                <div class="product-card-body">
+                    <h3>Concert Violin 4/4</h3><div class="card-price">₹37,499</div>
+                    <p>Hand-carved spruce top, maple back and sides, includes case and bow.</p>
+                    <button class="view-details-btn">View Details</button>
+                </div>
+            </div>
+            <div class="product-card" onclick="showDetailPage('string2')">
+                <img src="https://images.unsplash.com/photo-1507838153414-b4b713384a76?q=80&w=600&auto=format&fit=crop" alt="Cello">
+                <div class="product-card-body">
+                    <h3>Student Cello 4/4</h3><div class="card-price">₹58,499</div>
+                    <p>Solid spruce top, rich deep tone, ideal for intermediate orchestral players.</p>
+                    <button class="view-details-btn">View Details</button>
+                </div>
+            </div>
+            <div class="product-card" onclick="showDetailPage('string3')">
+                <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=600&auto=format&fit=crop" alt="Ukulele">
+                <div class="product-card-body">
+                    <h3>Concert Ukulele</h3><div class="card-price">₹12,499</div>
+                    <p>Mahogany body, 15 frets, warm Hawaiian sound, perfect starter instrument.</p>
+                    <button class="view-details-btn">View Details</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="wishlistPage" style="display:none;">
+    <button class="back-btn" onclick="showPage('homePage')">&#8592; Back to Home</button>
+    <div class="category-page">
+        <h2>My Wishlist</h2>
+        <p class="category-desc" id="wishlistEmptyMsg">Your wishlist is currently empty.</p>
+        <div class="products-grid" id="wishlistGrid">
+        </div>
+    </div>
+</div>
+
+<div id="guitar1Detail" style="display:none;">
+    <button class="back-btn" onclick="showCategoryPage('guitars')">&#8592; Back to Guitars</button>
+    <div class="detail-page">
+        <div class="detail-layout">
+            <div class="detail-gallery">
+                <img class="detail-main-img" id="guitar1MainImg" src="https://images.unsplash.com/photo-1605020420620-20c943cc4669?q=80&w=700&auto=format&fit=crop" alt="Acoustic">
+                <div class="detail-thumbs">
+                    <img src="https://images.unsplash.com/photo-1605020420620-20c943cc4669?q=80&w=200&auto=format&fit=crop" class="active-thumb" onclick="switchDetailImg('guitar1MainImg', this.src, this)">
+                    <img src="https://images.unsplash.com/photo-1510915361894-db8b60106cb1?q=80&w=200&auto=format&fit=crop" onclick="switchDetailImg('guitar1MainImg', this.src, this)">
+                </div>
+            </div>
+            <div class="detail-info">
+                <div class="detail-badge">In Stock</div>
+                <h1>Classic Acoustic Guitar</h1>
+                <div class="detail-price">₹49,999</div>
+                <p class="detail-desc">Experience rich, warm tones with our Classic Acoustic Guitar. Crafted with a solid mahogany top and rosewood back and sides.</p>
+                <ul class="detail-specs">
+                    <li><strong>Brand</strong> Musica Originals</li>
+                    <li><strong>Body</strong> Solid Mahogany</li>
+                    <li><strong>Fretboard</strong> Rosewood</li>
+                    <li><strong>Strings</strong> 6 (Steel)</li>
+                </ul>
+                <div class="detail-actions">
+                    <button class="detail-add-cart" onclick="showPaymentPage('Classic Acoustic Guitar', '₹49,999')">Buy Now</button>
+                    <button class="detail-wishlist" onclick="toggleWishlist(this, 'guitar1')">&#9825; Wishlist</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="guitar2Detail" style="display:none;">
+    <button class="back-btn" onclick="showCategoryPage('guitars')">&#8592; Back to Guitars</button>
+    <div class="detail-page">
+        <div class="detail-layout">
+            <div class="detail-gallery">
+                <img class="detail-main-img" id="guitar2MainImg" src="https://images.unsplash.com/photo-1510915361894-db8b60106cb1?q=80&w=700&auto=format&fit=crop" alt="Electric">
+            </div>
+            <div class="detail-info">
+                <div class="detail-badge">In Stock</div>
+                <h1>Electric Lead Guitar</h1>
+                <div class="detail-price">₹70,999</div>
+                <p class="detail-desc">Unleash your inner rock god with our Electric Lead Guitar. Featuring dual humbucking pickups and a resonant alder body.</p>
+                <ul class="detail-specs">
+                    <li><strong>Brand</strong> Musica Originals</li>
+                    <li><strong>Body</strong> Alder</li>
+                    <li><strong>Pickups</strong> 2x Humbucker</li>
+                </ul>
+                <div class="detail-actions">
+                    <button class="detail-add-cart" onclick="showPaymentPage('Electric Lead Guitar', '₹70,999')">Buy Now</button>
+                    <button class="detail-wishlist" onclick="toggleWishlist(this, 'guitar2')">&#9825; Wishlist</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="guitar3Detail" style="display:none;">
+    <button class="back-btn" onclick="showCategoryPage('guitars')">&#8592; Back to Guitars</button>
+    <div class="detail-page">
+        <div class="detail-layout">
+            <div class="detail-gallery">
+                <img class="detail-main-img" id="guitar3MainImg" src="https://images.unsplash.com/photo-1558098329-a11cff621064?q=80&w=700&auto=format&fit=crop" alt="Nylon">
+            </div>
+            <div class="detail-info">
+                <div class="detail-badge">In Stock</div>
+                <h1>Classical Nylon Guitar</h1>
+                <div class="detail-price">₹33,499</div>
+                <p class="detail-desc">Inspired by traditional Spanish luthiery, our Classical Nylon Guitar offers a mellow, expressive tone.</p>
+                <ul class="detail-specs">
+                    <li><strong>Brand</strong> Musica Originals</li>
+                    <li><strong>Top</strong> Solid Cedar</li>
+                    <li><strong>Strings</strong> Nylon</li>
+                </ul>
+                <div class="detail-actions">
+                    <button class="detail-add-cart" onclick="showPaymentPage('Classical Nylon Guitar', '₹33,499')">Buy Now</button>
+                    <button class="detail-wishlist" onclick="toggleWishlist(this, 'guitar3')">&#9825; Wishlist</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="keyboard1Detail" style="display:none;">
+    <button class="back-btn" onclick="showCategoryPage('keyboards')">&#8592; Back to Keyboards</button>
+    <div class="detail-page">
+        <div class="detail-layout">
+            <div class="detail-gallery">
+                <img class="detail-main-img" id="keyboard1MainImg" src="https://images.unsplash.com/photo-1561014816-50ce5acb5e73?w=700&auto=format&fit=crop" alt="Piano">
+            </div>
+            <div class="detail-info">
+                <div class="detail-badge">In Stock</div>
+                <h1>Digital Grand Piano</h1>
+                <div class="detail-price">₹99,999</div>
+                <p class="detail-desc">Experience the richness of a concert grand in a sleek digital package.</p>
+                <ul class="detail-specs">
+                    <li><strong>Keys</strong> 88 Weighted</li>
+                    <li><strong>Polyphony</strong> 192 Notes</li>
+                </ul>
+                <div class="detail-actions">
+                    <button class="detail-add-cart" onclick="showPaymentPage('Digital Grand Piano', '₹99,999')">Buy Now</button>
+                    <button class="detail-wishlist" onclick="toggleWishlist(this, 'keyboard1')">&#9825; Wishlist</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="keyboard2Detail" style="display:none;">
+    <button class="back-btn" onclick="showCategoryPage('keyboards')">&#8592; Back to Keyboards</button>
+    <div class="detail-page">
+        <div class="detail-layout">
+            <div class="detail-gallery">
+                <img class="detail-main-img" id="keyboard2MainImg" src="https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?q=80&w=700&auto=format&fit=crop" alt="Keyboard">
+            </div>
+            <div class="detail-info">
+                <div class="detail-badge">In Stock</div>
+                <h1>Portable Learning Keyboard</h1>
+                <div class="detail-price">₹24,999</div>
+                <p class="detail-desc">Start your musical journey today. Features light-up keys that guide beginners note by note.</p>
+                <ul class="detail-specs">
+                    <li><strong>Keys</strong> 61</li>
+                    <li><strong>Tones</strong> 400</li>
+                </ul>
+                <div class="detail-actions">
+                    <button class="detail-add-cart" onclick="showPaymentPage('Portable Learning Keyboard', '₹24,999')">Buy Now</button>
+                    <button class="detail-wishlist" onclick="toggleWishlist(this, 'keyboard2')">&#9825; Wishlist</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="keyboard3Detail" style="display:none;">
+    <button class="back-btn" onclick="showCategoryPage('keyboards')">&#8592; Back to Keyboards</button>
+    <div class="detail-page">
+        <div class="detail-layout">
+            <div class="detail-gallery">
+                <img class="detail-main-img" id="keyboard3MainImg" src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=700&auto=format&fit=crop" alt="Synth">
+            </div>
+            <div class="detail-info">
+                <div class="detail-badge">In Stock</div>
+                <h1>Analog Synthesizer</h1>
+                <div class="detail-price">₹62,499</div>
+                <p class="detail-desc">Shape sound with your hands. Puts true analog circuitry at your fingertips.</p>
+                <ul class="detail-specs">
+                    <li><strong>Keys</strong> 37 Mini</li>
+                    <li><strong>Oscillators</strong> 3 VCO</li>
+                </ul>
+                <div class="detail-actions">
+                    <button class="detail-add-cart" onclick="showPaymentPage('Analog Synthesizer', '₹62,499')">Buy Now</button>
+                    <button class="detail-wishlist" onclick="toggleWishlist(this, 'keyboard3')">&#9825; Wishlist</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="drum1Detail" style="display:none;">
+    <button class="back-btn" onclick="showCategoryPage('drums')">&#8592; Back to Drums</button>
+    <div class="detail-page">
+        <div class="detail-layout">
+            <div class="detail-gallery">
+                <img class="detail-main-img" id="drum1MainImg" src="https://images.unsplash.com/photo-1461784121038-f088ca1e7714?w=700&auto=format&fit=crop" alt="Drums">
+            </div>
+            <div class="detail-info">
+                <div class="detail-badge">In Stock</div>
+                <h1>Pro Acoustic Drum Kit</h1>
+                <div class="detail-price">₹1,24,999</div>
+                <p class="detail-desc">Drive the beat with our 5-piece Pro Acoustic Drum Kit crafted from select maple shells.</p>
+                <ul class="detail-specs">
+                    <li><strong>Shells</strong> 5-Piece Maple</li>
+                    <li><strong>Cymbals</strong> Zildjian</li>
+                </ul>
+                <div class="detail-actions">
+                    <button class="detail-add-cart" onclick="showPaymentPage('Pro Acoustic Drum Kit', '₹1,24,999')">Buy Now</button>
+                    <button class="detail-wishlist" onclick="toggleWishlist(this, 'drum1')">&#9825; Wishlist</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="drum2Detail" style="display:none;">
+    <button class="back-btn" onclick="showCategoryPage('drums')">&#8592; Back to Drums</button>
+    <div class="detail-page">
+        <div class="detail-layout">
+            <div class="detail-gallery">
+                <img class="detail-main-img" id="drum2MainImg" src="https://images.unsplash.com/photo-1571327073757-71d13c5e0041?q=80&w=700&auto=format&fit=crop" alt="E-Drums">
+            </div>
+            <div class="detail-info">
+                <div class="detail-badge">In Stock</div>
+                <h1>Electronic Drum Kit</h1>
+                <div class="detail-price">₹74,999</div>
+                <p class="detail-desc">Practice anytime without disturbing others. Features responsive mesh drum heads.</p>
+                <ul class="detail-specs">
+                    <li><strong>Pads</strong> Mesh Head</li>
+                    <li><strong>Preset Kits</strong> 50</li>
+                </ul>
+                <div class="detail-actions">
+                    <button class="detail-add-cart" onclick="showPaymentPage('Electronic Drum Kit', '₹74,999')">Buy Now</button>
+                    <button class="detail-wishlist" onclick="toggleWishlist(this, 'drum2')">&#9825; Wishlist</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="drum3Detail" style="display:none;">
+    <button class="back-btn" onclick="showCategoryPage('drums')">&#8592; Back to Drums</button>
+    <div class="detail-page">
+        <div class="detail-layout">
+            <div class="detail-gallery">
+                <img class="detail-main-img" id="drum3MainImg" src="https://images.unsplash.com/photo-1519892300165-cb5542fb47c7?q=80&w=700&auto=format&fit=crop" alt="Cajon">
+            </div>
+            <div class="detail-info">
+                <div class="detail-badge">In Stock</div>
+                <h1>Handcrafted Cajon</h1>
+                <div class="detail-price">₹16,599</div>
+                <p class="detail-desc">A versatile percussive box instrument originating from Peru. Premium birch plywood.</p>
+                <ul class="detail-specs">
+                    <li><strong>Material</strong> Birch Plywood</li>
+                    <li><strong>Snare</strong> Adjustable</li>
+                </ul>
+                <div class="detail-actions">
+                    <button class="detail-add-cart" onclick="showPaymentPage('Handcrafted Cajon', '₹16,599')">Buy Now</button>
+                    <button class="detail-wishlist" onclick="toggleWishlist(this, 'drum3')">&#9825; Wishlist</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="string1Detail" style="display:none;">
+    <button class="back-btn" onclick="showCategoryPage('strings')">&#8592; Back to Strings</button>
+    <div class="detail-page">
+        <div class="detail-layout">
+            <div class="detail-gallery">
+                <img class="detail-main-img" id="string1MainImg" src="https://images.unsplash.com/photo-1575032996422-68b9efa1d603?w=700&auto=format&fit=crop" alt="Violin">
+            </div>
+            <div class="detail-info">
+                <div class="detail-badge">In Stock</div>
+                <h1>Concert Violin 4/4</h1>
+                <div class="detail-price">₹37,499</div>
+                <p class="detail-desc">Hand-carved from solid tonewoods, producing a warm, focused tone.</p>
+                <ul class="detail-specs">
+                    <li><strong>Size</strong> 4/4 (Full)</li>
+                    <li><strong>Top</strong> Solid Spruce</li>
+                </ul>
+                <div class="detail-actions">
+                    <button class="detail-add-cart" onclick="showPaymentPage('Concert Violin 4/4', '₹37,499')">Buy Now</button>
+                    <button class="detail-wishlist" onclick="toggleWishlist(this, 'string1')">&#9825; Wishlist</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="string2Detail" style="display:none;">
+    <button class="back-btn" onclick="showCategoryPage('strings')">&#8592; Back to Strings</button>
+    <div class="detail-page">
+        <div class="detail-layout">
+            <div class="detail-gallery">
+                <img class="detail-main-img" id="string2MainImg" src="https://images.unsplash.com/photo-1507838153414-b4b713384a76?q=80&w=700&auto=format&fit=crop" alt="Cello">
+            </div>
+            <div class="detail-info">
+                <div class="detail-badge">In Stock</div>
+                <h1>Student Cello 4/4</h1>
+                <div class="detail-price">₹58,499</div>
+                <p class="detail-desc">Feel the deep resonance of a fine cello, built for serious intermediate players.</p>
+                <ul class="detail-specs">
+                    <li><strong>Size</strong> 4/4 (Full)</li>
+                    <li><strong>Top</strong> Solid Spruce</li>
+                </ul>
+                <div class="detail-actions">
+                    <button class="detail-add-cart" onclick="showPaymentPage('Student Cello 4/4', '₹58,499')">Buy Now</button>
+                    <button class="detail-wishlist" onclick="toggleWishlist(this, 'string2')">&#9825; Wishlist</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="string3Detail" style="display:none;">
+    <button class="back-btn" onclick="showCategoryPage('strings')">&#8592; Back to Strings</button>
+    <div class="detail-page">
+        <div class="detail-layout">
+            <div class="detail-gallery">
+                <img class="detail-main-img" id="string3MainImg" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=700&auto=format&fit=crop" alt="Ukulele">
+            </div>
+            <div class="detail-info">
+                <div class="detail-badge">In Stock</div>
+                <h1>Concert Ukulele</h1>
+                <div class="detail-price">₹12,499</div>
+                <p class="detail-desc">Bright, cheerful, and endlessly fun to play. Crafted from solid mahogany.</p>
+                <ul class="detail-specs">
+                    <li><strong>Size</strong> Concert</li>
+                    <li><strong>Body</strong> Solid Mahogany</li>
+                </ul>
+                <div class="detail-actions">
+                    <button class="detail-add-cart" onclick="showPaymentPage('Concert Ukulele', '₹12,499')">Buy Now</button>
+                    <button class="detail-wishlist" onclick="toggleWishlist(this, 'string3')">&#9825; Wishlist</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="paymentPage" style="display:none;">
+    <button class="back-btn" onclick="showPage('homePage')">&#8592; Cancel & Back to Home</button>
+    <div class="payment-container">
+        <div class="checkout-form">
+            <h2>Billing Details</h2>
+            <input type="text" placeholder="Full Name" required>
+            <input type="email" placeholder="Email Address" required>
+            <input type="text" placeholder="Street Address" required>
+            <input type="text" placeholder="City" required>
+            <div class="row">
+                <input type="text" placeholder="State" required>
+                <input type="text" placeholder="Zip Code" required>
+            </div>
+            <h2>Payment Information</h2>
+            <input type="text" placeholder="Cardholder Name" required>
+            <input type="text" placeholder="Card Number" required maxlength="16">
+            <div class="row">
+                <input type="text" placeholder="MM/YY" required maxlength="5">
+                <input type="text" placeholder="CVV" required maxlength="3">
+            </div>
+        </div>
+        <div class="order-summary">
+            <h2>Order Summary</h2>
+            <div class="summary-item">
+                <span id="checkoutItemName">Product Name</span>
+                <span id="checkoutItemPrice">₹0</span>
+            </div>
+            <div class="summary-item">
+                <span>Shipping</span>
+                <span>Free</span>
+            </div>
+            <div class="summary-total">
+                <span>Total</span>
+                <span id="checkoutTotal">₹0</span>
+            </div>
+            <button class="pay-btn" onclick="processPayment()">Confirm & Pay</button>
+        </div>
+    </div>
+</div>
+
+<div id="profilePage" style="display:none;">
+    <button class="back-btn" onclick="showPage('homePage')">&#8592; Back to Home</button>
+    <div class="profile-container">
+        <div class="profile-sidebar">
+            <div class="profile-avatar" id="profileAvatar">D</div>
+            <h3 id="profileSidebarName">Dhruv</h3>
+            <p id="profileSidebarEmail">dhruv@musica.com</p>
+            <ul class="profile-menu">
+                <li>Account Details</li>
+                <li>Order History</li>
+                <li onclick="showWishlistPage()">Wishlist</li>
+                <li onclick="logoutUser()">Logout</li>
+            </ul>
+        </div>
+        <div class="profile-content">
+            <div class="profile-section">
+                <h2>My Details</h2>
+                <div class="info-grid">
+                    <div class="info-box">
+                        <label>Full Name</label>
+                        <span id="profileDetailName">Dhruv</span>
+                    </div>
+                    <div class="info-box">
+                        <label>Email Address</label>
+                        <span id="profileDetailEmail">dhruv@musica.com</span>
+                    </div>
+                    <div class="info-box">
+                        <label>Phone Number</label>
+                        <span>+91 98765 43210</span>
+                    </div>
+                    <div class="info-box">
+                        <label>Saved Address</label>
+                        <span>Ahmedabad, Gujarat, India</span>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-section">
+                <h2>Recent Orders</h2>
+                <div class="order-list">
+                    <div class="order-item">
+                        <div class="order-item-details">
+                            <h4>Classic Acoustic Guitar</h4>
+                            <p>Order #ORD-84729 • Placed on May 10, 2026</p>
+                        </div>
+                        <div class="order-status">Delivered</div>
+                    </div>
+                    <div class="order-item">
+                        <div class="order-item-details">
+                            <h4>Handcrafted Cajon</h4>
+                            <p>Order #ORD-91234 • Placed on Feb 15, 2026</p>
+                        </div>
+                        <div class="order-status">Delivered</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="authModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="auth-tabs">
+            <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+            <button class="tab-btn" onclick="switchTab('register')">Register</button>
+        </div>
+        <form id="loginForm" class="auth-form active-form" onsubmit="loginUser(event)">
+            <h2>Welcome Back</h2>
+            <input type="email" placeholder="Email Address" required>
+            <input type="password" placeholder="Password" required>
+            <button type="submit" class="auth-submit">Login</button>
+        </form>
+        <form id="registerForm" class="auth-form" onsubmit="loginUser(event)">
+            <h2>Create Account</h2>
+            <input type="text" placeholder="Full Name" required>
+            <input type="email" placeholder="Email Address" required>
+            <input type="password" placeholder="Password" required>
+            <button type="submit" class="auth-submit">Register</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    let currentUser = {
+        name: "Guest",
+        email: "guest@musica.com"
+    };
+    let wishlist = [];
+
+    function showPage(pageId) {
+        document.getElementById('homePage').style.display = 'none';
+        document.getElementById(pageId).style.display = 'block';
+        if(pageId !== 'homePage') {
+            document.getElementById('heroSection').style.display = 'none';
+            document.getElementById('mainHeader').style.paddingBottom = '0px';
+        } else {
+            document.getElementById('heroSection').style.display = 'block';
+            document.getElementById('mainHeader').style.paddingBottom = '50px';
+        }
+        hideAllNewPages();
+    }
+    function changeImage(newSrc, thumbnailElement) {
+        document.getElementById('mainImage').src = newSrc;
+        let thumbnails = document.querySelectorAll('.thumbnail-gallery img');
+        thumbnails.forEach(img => img.classList.remove('active-thumb'));
+        thumbnailElement.classList.add('active-thumb');
+    }
+    let i = 0, timer = setInterval(() => move(1), 3500);
+    function move(step) {
+        i = (i + step + 4) % 4;
+        document.querySelector('.slides').style.transform = `translateX(-${i * 100}%)`;
+        clearInterval(timer); timer = setInterval(() => move(1), 3500);
+    }
+    const modal = document.getElementById("authModal");
+    function openModal() { modal.style.display = "block"; }
+    function closeModal() { modal.style.display = "none"; }
+    window.onclick = function(event) { if (event.target == modal) { closeModal(); } }
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active-form'));
+        if(tab === 'login') {
+            document.querySelectorAll('.tab-btn')[0].classList.add('active');
+            document.getElementById('loginForm').classList.add('active-form');
+        } else {
+            document.querySelectorAll('.tab-btn')[1].classList.add('active');
+            document.getElementById('registerForm').classList.add('active-form');
+        }
+    }
+    const allNewPages = [
+        'allCategoriesPage','guitarsPage','keyboardsPage','drumsPage','stringsPage',
+        'guitar1Detail','guitar2Detail','guitar3Detail',
+        'keyboard1Detail','keyboard2Detail','keyboard3Detail',
+        'drum1Detail','drum2Detail','drum3Detail',
+        'string1Detail','string2Detail','string3Detail', 'paymentPage', 'profilePage', 'wishlistPage'
+    ];
+    function hideAllNewPages() {
+        allNewPages.forEach(id => {
+            let el = document.getElementById(id);
+            if(el) el.style.display = 'none';
+        });
+    }
+    function showAllCategories() {
+        document.getElementById('homePage').style.display = 'none';
+        document.getElementById('heroSection').style.display = 'none';
+        document.getElementById('mainHeader').style.paddingBottom = '0px';
+        hideAllNewPages();
+        document.getElementById('allCategoriesPage').style.display = 'block';
+        window.scrollTo(0, 0);
+    }
+    function showCategoryPage(category) {
+        document.getElementById('homePage').style.display = 'none';
+        document.getElementById('heroSection').style.display = 'none';
+        document.getElementById('mainHeader').style.paddingBottom = '0px';
+        hideAllNewPages();
+        document.getElementById(category + 'Page').style.display = 'block';
+        window.scrollTo(0, 0);
+    }
+    function showDetailPage(productId) {
+        document.getElementById('homePage').style.display = 'none';
+        document.getElementById('heroSection').style.display = 'none';
+        document.getElementById('mainHeader').style.paddingBottom = '0px';
+        hideAllNewPages();
+        document.getElementById(productId + 'Detail').style.display = 'block';
+        window.scrollTo(0, 0);
+    }
+    function switchDetailImg(mainImgId, newSrc, clickedThumb) {
+        document.getElementById(mainImgId).src = newSrc;
+        const thumbContainer = clickedThumb.parentElement;
+        thumbContainer.querySelectorAll('img').forEach(img => img.classList.remove('active-thumb'));
+        clickedThumb.classList.add('active-thumb');
+    }
+    function showPaymentPage(itemName, itemPrice) {
+        document.getElementById('checkoutItemName').innerText = itemName;
+        document.getElementById('checkoutItemPrice').innerText = itemPrice;
+        document.getElementById('checkoutTotal').innerText = itemPrice;
+        document.getElementById('homePage').style.display = 'none';
+        document.getElementById('heroSection').style.display = 'none';
+        document.getElementById('mainHeader').style.paddingBottom = '0px';
+        hideAllNewPages();
+        document.getElementById('paymentPage').style.display = 'block';
+        window.scrollTo(0, 0);
+    }
+    function processPayment() {
+        alert('Payment Successful! Thank you for your order.');
+        showPage('homePage');
+    }
+    function loginUser(e) {
+        e.preventDefault();
+        const formId = e.target.id;
+        if (formId === 'registerForm') {
+            const inputs = e.target.querySelectorAll('input');
+            currentUser.name = inputs[0].value;
+            currentUser.email = inputs[1].value;
+        } else if (formId === 'loginForm') {
+            const inputs = e.target.querySelectorAll('input');
+            currentUser.email = inputs[0].value;
+            currentUser.name = currentUser.name !== "Guest" ? currentUser.name : currentUser.email.split('@')[0];
+        }
+        updateProfileUI();
+        closeModal();
+        let authBtn = document.getElementById('authBtn');
+        authBtn.innerText = 'My Profile';
+        authBtn.setAttribute('onclick', 'showProfile()');
+        alert('Authentication successful!');
+    }
+    function updateProfileUI() {
+        document.getElementById('profileAvatar').innerText = currentUser.name.charAt(0).toUpperCase();
+        document.getElementById('profileSidebarName').innerText = currentUser.name;
+        document.getElementById('profileSidebarEmail').innerText = currentUser.email;
+        document.getElementById('profileDetailName').innerText = currentUser.name;
+        document.getElementById('profileDetailEmail').innerText = currentUser.email;
+    }
+    function logoutUser() {
+        let authBtn = document.getElementById('authBtn');
+        authBtn.innerText = 'Login / Register';
+        authBtn.setAttribute('onclick', 'openModal()');
+        currentUser = { name: "Guest", email: "guest@musica.com" };
+        showPage('homePage');
+        alert('Successfully logged out.');
+    }
+    function showProfile() {
+        document.getElementById('homePage').style.display = 'none';
+        document.getElementById('heroSection').style.display = 'none';
+        document.getElementById('mainHeader').style.paddingBottom = '0px';
+        hideAllNewPages();
+        document.getElementById('profilePage').style.display = 'block';
+        window.scrollTo(0, 0);
+    }
+    function toggleWishlist(btn, productId) {
+        let index = wishlist.findIndex(item => item.id === productId);
+        if (index > -1) {
+            wishlist.splice(index, 1);
+            btn.innerHTML = '&#9825; Wishlist';
+            btn.style.backgroundColor = 'transparent';
+            btn.style.color = '#010101';
+        } else {
+            let container = btn.closest('.detail-info');
+            let name = container.querySelector('h1').innerText;
+            let price = container.querySelector('.detail-price').innerText;
+            let img = btn.closest('.detail-layout').querySelector('.detail-main-img').src;
+            wishlist.push({ id: productId, name: name, price: price, img: img });
+            btn.innerHTML = '&#9829; Wishlisted';
+            btn.style.backgroundColor = '#010101';
+            btn.style.color = 'gold';
+        }
+        updateWishlistNav();
+        renderWishlist();
+    }
+    function removeFromWishlist(productId) {
+        wishlist = wishlist.filter(item => item.id !== productId);
+        let btn = document.querySelector(`button[onclick*="'${productId}'"]`);
+        if(btn && btn.classList.contains('detail-wishlist')) {
+            btn.innerHTML = '&#9825; Wishlist';
+            btn.style.backgroundColor = 'transparent';
+            btn.style.color = '#010101';
+        }
+        updateWishlistNav();
+        renderWishlist();
+    }
+    function updateWishlistNav() {
+        let countSpan = document.getElementById('wishlistCount');
+        if(countSpan) countSpan.innerText = `(${wishlist.length})`;
+    }
+    function renderWishlist() {
+        let grid = document.getElementById('wishlistGrid');
+        let msg = document.getElementById('wishlistEmptyMsg');
+        grid.innerHTML = '';
+        if (wishlist.length === 0) {
+            msg.style.display = 'block';
+        } else {
+            msg.style.display = 'none';
+            wishlist.forEach(item => {
+                grid.innerHTML += `
+                    <div class="product-card">
+                        <img src="${item.img}" alt="${item.name}" onclick="showDetailPage('${item.id}')">
+                        <div class="product-card-body">
+                            <h3 onclick="showDetailPage('${item.id}')" style="cursor:pointer;">${item.name}</h3>
+                            <div class="card-price">${item.price}</div>
+                            <button class="view-details-btn" onclick="showPaymentPage('${item.name}', '${item.price}')">Buy Now</button>
+                            <button class="remove-wishlist-btn" onclick="removeFromWishlist('${item.id}')">Remove</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+    }
+    function showWishlistPage() {
+        document.getElementById('homePage').style.display = 'none';
+        document.getElementById('heroSection').style.display = 'none';
+        document.getElementById('mainHeader').style.paddingBottom = '0px';
+        hideAllNewPages();
+        document.getElementById('wishlistPage').style.display = 'block';
+        renderWishlist();
+        window.scrollTo(0, 0);
+    }
+</script>
+</body>
+</html>
